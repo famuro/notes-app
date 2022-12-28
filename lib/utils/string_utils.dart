@@ -1,4 +1,5 @@
 const String registerString = 'Register';
+const String loginString = 'Login';
 const String emailString = 'Email';
 const String passwordString = 'Password';
 const String enterEmailString = 'Enter your email:';

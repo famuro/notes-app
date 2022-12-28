@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 import '../firebase_options.dart';
+import '../utils/firebase/auth_exception_codes.dart';
 import '../utils/string_utils.dart';
 
 class RegisterView extends StatefulWidget {
@@ -87,17 +88,22 @@ class _RegisterViewState extends State<RegisterView> {
     );
   }
 
-  Future<UserCredential> _registerUser(
-      final String email, final String password) async {
-    // TODO: validate email
-
-    // TODO: validate password
-
+  dynamic _registerUser(final String email, final String password) async {
     // TODO: hash password
 
-    final UserCredential credential = await FirebaseAuth.instance
-        .createUserWithEmailAndPassword(email: email, password: password);
+    try {
+      final UserCredential credential = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(email: email, password: password);
 
-    return credential;
+      return credential;
+    } on FirebaseAuthException catch (e) {
+      if (e.code == weakPasswordCode) {
+        print('Weak Password!');
+      } else if (e.code == emailAlreadyInUseCode) {
+        print('Email already in use');
+      } else if (e.code == invalidEmailCode) {
+        print('Invalid email entered');
+      }
+    }
   }
 }

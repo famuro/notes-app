@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 import '../firebase_options.dart';
+import '../utils/firebase/auth_exception_codes.dart';
 import '../utils/string_utils.dart';
 
 class LoginView extends StatefulWidget {
@@ -87,10 +88,20 @@ class _LoginViewState extends State<LoginView> {
     );
   }
 
-  Future<UserCredential> _loginUser(String email, String password) async {
-    final UserCredential credentials = await FirebaseAuth.instance
-        .signInWithEmailAndPassword(email: email, password: password);
+  dynamic _loginUser(String email, String password) async {
+    try {
+      final UserCredential credentials = await FirebaseAuth.instance
+          .signInWithEmailAndPassword(email: email, password: password);
 
-    return credentials;
+      print(credentials);
+
+      return credentials;
+    } on FirebaseAuthException catch (e) {
+      if (e.code == userNotFoundCode) {
+        print('User not found');
+      } else if (e.code == wrongPasswordCode) {
+        print('Wrong password');
+      }
+    }
   }
 }

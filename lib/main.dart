@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'views/register_view.dart';
+import 'views/home_page.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -11,7 +11,7 @@ void main() {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const RegisterView(title: 'Register'),
+      home: const HomePage(),
     ),
   );
 }

@@ -7,9 +7,7 @@ import '../utils/firebase/auth_exception_codes.dart';
 import '../utils/string_utils.dart';
 
 class RegisterView extends StatefulWidget {
-  const RegisterView({super.key, required this.title});
-
-  final String title;
+  const RegisterView({super.key});
 
   @override
   State<RegisterView> createState() => _RegisterViewState();
@@ -50,7 +48,7 @@ class _RegisterViewState extends State<RegisterView> {
             case ConnectionState.none:
             case ConnectionState.waiting:
             case ConnectionState.active:
-              return const Text(loadString);
+              return const CircularProgressIndicator();
 
             case ConnectionState.done:
               return Column(
@@ -80,6 +78,13 @@ class _RegisterViewState extends State<RegisterView> {
                     },
                     child: const Text(registerString),
                   ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pushNamedAndRemoveUntil(
+                          loginRouteName, (route) => false);
+                    },
+                    child: const Text(loginPrompt),
+                  ),
                 ],
               );
           } // end switch
@@ -89,8 +94,6 @@ class _RegisterViewState extends State<RegisterView> {
   }
 
   dynamic _registerUser(final String email, final String password) async {
-    // TODO: hash password
-
     try {
       final UserCredential credential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
@@ -98,11 +101,11 @@ class _RegisterViewState extends State<RegisterView> {
       return credential;
     } on FirebaseAuthException catch (e) {
       if (e.code == weakPasswordCode) {
-        print('Weak Password!');
+        // TODO: handle weak password
       } else if (e.code == emailAlreadyInUseCode) {
-        print('Email already in use');
+        // TODO: handle email already in use
       } else if (e.code == invalidEmailCode) {
-        print('Invalid email entered');
+        // TODO: handle invalid email
       }
     }
   }

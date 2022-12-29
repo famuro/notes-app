@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'utils/page_routes.dart';
 import 'views/home_page.dart';
 
 void main() {
@@ -12,6 +13,7 @@ void main() {
         primarySwatch: Colors.blue,
       ),
       home: const HomePage(),
+      routes: getRoutes(),
     ),
   );
 }
